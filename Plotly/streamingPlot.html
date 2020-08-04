@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>Visualize</title>
+    <script src="C:\\Program Files\\Julia\\local\\plotly.js"></script>   
+</head>
+<body>
+    <div id="graph"></div>
+    <script>
+    function rand() {
+        return Math.random();
+      }
+      
+      Plotly.plot('graph', [{
+        x: [],
+        y: [],
+        mode: 'lines'
+      }]);
+      
+      // var cnt = 0;
+      
+      // var interval = setInterval(function() {
+        setInterval(function() {
+        Plotly.extendTraces('graph', {
+          x: [[rand()]],
+          y: [[rand()]]
+        }, [0])
+      
+        // if(cnt === 100) clearInterval(interval);
+      }, 200);
+  </script>
+</body>
+</html>

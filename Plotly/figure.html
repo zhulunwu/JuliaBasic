@@ -1,0 +1,18 @@
+<html>
+<head>
+        <title>Julia Figure</title>
+        <script src="C:\\Program Files\\Julia\\local\\plotly.js"></script>   
+</head>
+<body>
+    <div id="graph"></div>
+    <script>
+        var xhr = new XMLHttpRequest(); 
+        xhr.open('GET', "http://127.0.0.1:8080", true); 
+        xhr.onreadystatechange = processRequest;
+        function processRequest(e) {       
+            console.log(e.data);            
+        }
+        xhr.send(); 
+    </script>
+</body>
+</html>
