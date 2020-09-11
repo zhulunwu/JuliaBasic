@@ -1,6 +1,6 @@
 using Wavelets
 using Makie
-using WAV
+using MFCC.WAV
 
 data=wavread("D:/Explore/DataSets/audios/login.wav")
 adata=data[1]
