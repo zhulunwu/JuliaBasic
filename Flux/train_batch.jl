@@ -13,15 +13,13 @@ loss(x,y) #0.065  可由如下算式给出：0.5*sum((m(x).-y).^2)
 
 # 计算梯度，所谓梯度，指的是损失函数对参数的导数。如果是深度神经网络，则需要考虑复合函数求导法则
 grads = gradient(() -> loss(x, y), ps)
-grads[w] #-0.4 -0.8 见下面的分析
-grads[b] #-0.3999999761581421 ≃ -0.4 
+grads[w] #1.3 1.4 见下面的分析
 
 η = 0.1 # Learning Rate
 for p in ps
   Flux.update!(p, η * grads[p])
 end
 println(w)
-println(b)
 
 #=以上计算的理论过程如下
 z=((w1*x1+w2*x2+b-y1)^2+(w1*X1+w2*X2+b-y2)^2)/2
