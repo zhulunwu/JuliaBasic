@@ -18,4 +18,4 @@ end
 input=rand(Float32,Nf,FRAMES)
 label=rand(Float32,Nf,FRAMES)
 
-@benchmark gs=gradient(() -> loss(input, label), params(m))
+@btime gs=gradient(() -> loss(input, label), Flux.params(m))
