@@ -10,7 +10,7 @@ function speed()
     p=params(m)
     opt = ADAM(0.0001)
 
-    function loss(data::Array{Float32,2},label::Array{Float32,2})
+    function loss(data,label)
         fs=[view(data,:,i) for i=1:FRAMES]
         out=m.(fs) 
         pre=hcat(out...)
