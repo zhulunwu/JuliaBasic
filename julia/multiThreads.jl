@@ -41,11 +41,35 @@ end
 @time waste_nt()
 #貌似效率反而下降了。这可能要看计算和通信的对比。
 
-import Base.Threads.@spawn
-function fib(n::Int)
-    if n < 2
-        return n
+using BenchmarkTools
+# π计算的串行程序。
+function spi()
+    N=100000000
+    sum=0
+    for n=1:N
+        x=rand()
+        y=rand()
+        x^2+y^2 <= 1 && (sum+=1)
     end
-    t = @spawn fib(n - 2)
-    return fib(n - 1) + fetch(t)
+    println("π=",4*sum/N)
+end
+# π计算的并行程序。粗粒化并行。
+function points_in_circle(n::Int)
+    sum=0
+    for i=1:n
+        x=rand()
+        y=rand()
+        x^2+y^2 <= 1 && (sum+=1)
+    end
+    return sum
+end
+function mpi()
+    N=100000000
+    n=N÷100
+    sum=Threads.Atomic{Int}(0)
+    Threads.@threads for i=1:100
+        sum_part=points_in_circle(n)
+        Threads.atomic_add!(sum,sum_part)
+    end
+    println("π=",4*sum[]/N)
 end

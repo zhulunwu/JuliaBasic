@@ -43,3 +43,30 @@ end
 b=Task(waste)
 schedule(b)
 # 执行后并没有回到repl中，而是一直等待任务完成。可见协程并非真正的并行。
+
+function task02()
+    for i in ["a","b","c","d","e","f","g"]
+        print(i)
+        sleep(1)
+    end
+end
+function keep(x)
+    a=0
+    for i=0:0.0001:x
+        for j=0:0.0001:x
+            a=rand()*rand()
+        end
+    end
+    return nothing
+end
+
+function task01()
+    for i=1:10
+        print(i)
+        keep(3)
+    end
+end
+t=@task task01()
+schedule(t);task02()
+#从输出结果看，两个任务是交叉运行的。上面的没有回到repl可能只是因为切换到repl的时间窗口太小。
+#感觉并不是靠谱的东西。
