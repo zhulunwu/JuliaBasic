@@ -11,8 +11,7 @@ function speed()
     opt = ADAM(0.0001)
 
     function loss(data,label)
-        fs=[view(data,:,i) for i=1:FRAMES]
-        out=m.(fs) 
+        out=m.(data) 
         pre=hcat(out...)
         l=Flux.mse(pre,label)
         Flux.reset!(m)
@@ -23,7 +22,8 @@ function speed()
         tl=rand(Float32,Nf,FRAMES) 
         tr=rand(Float32,Nf,FRAMES)
         tm=(tl+tr)/2.0f0
-        data=[(tm,tl)]
+        fs=[view(tm,:,i) for i=1:FRAMES]
+        data=[(fs,tl)]
         @time Flux.train!(loss,p,data,opt)
     end
 end
