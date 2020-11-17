@@ -73,8 +73,35 @@ end
 train_step=tf.function(tt.step_train)
 test_step =tf.function(tt.step_test)
 
+#训练
+batch_size=32
+nbatch=length(lbls_train)÷batch_size
+data_batched=[(data_train[32*i-31:32*i,:,:,:],lbls_train[32*i-31:32*i]) for i=1:nbatch]
 
-images=data_train[1:2,:,:,:]
-labels=lbls_train[1:2,:]
-train_step(images, labels)
-test_step(images,labels)
+#测试数据
+imgs_test=mnist_images(:test)
+data_test=zeros(length(imgs_test),28,28,1)
+for i=1:length(imgs_test)
+  data_test[i,:,:,1]=Float32.(imgs_test[i])
+end
+lbls_test=Int8.(mnist_labels("test"))
+
+
+EPOCHS = 5
+for epoch=1:EPOCHS
+    train_loss.reset_states()
+    train_accuracy.reset_states()
+    test_loss.reset_states()
+    test_accuracy.reset_states()
+    
+    for (imgs,lbls) in data_batched
+        train_step(imgs,lbls)
+    end
+
+    test_step(data_test,lbls_test)
+
+    println("train loss=",train_loss.result().numpy(),
+            "\ntrain accuracy=",train_accuracy.result().numpy()*100,
+            "\ntest loss=",test_loss.result().numpy(), 
+            "\ntest accuracy=",test_accuracy.result().numpy()*100)
+end
