@@ -1,7 +1,8 @@
 using Flux
+include("C:/Program Files/Julia/local/share/julia/packages/Tracker/TrackerFlux.jl")
 
 function speed(Nf::Int,FRAMES::Int,DIM_H::Int)
-    m=Chain(GRU(Nf,DIM_H),GRU(DIM_H,DIM_H),GRU(DIM_H,DIM_H),Dense(DIM_H,Nf,relu))
+    m=Chain(GRU(Nf,DIM_H),GRU(DIM_H,DIM_H),GRU(DIM_H,DIM_H),Dense(DIM_H,Nf,relu)) |>TrackerFlux.track
         
     p=params(m)
     opt = ADAM(0.0001)
@@ -13,6 +14,7 @@ function speed(Nf::Int,FRAMES::Int,DIM_H::Int)
         return Flux.mse(pre,label)
     end
 
+    TrackerFlux.overload_gradient()
     for n=1:10
         tl=rand(Float32,Nf,FRAMES) 
         tr=rand(Float32,Nf,FRAMES)
