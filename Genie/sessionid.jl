@@ -5,9 +5,7 @@ using Genie.Router
 Genie.secret_token!()
 Sessions.init()
 route("/home") do
-    r=Genie.Requests.payload(:REQUEST)
-    rd=Dict(r)
-    # rd["cookie"]
-    # findfirst("sessionid",r)
+    req=Genie.Requests.payload(:REQUEST)
+    Dict(req)
 end
 up()
